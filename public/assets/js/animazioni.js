@@ -15,7 +15,7 @@
 
   if (fermo || !window.gsap || !window.ScrollTrigger) {
     root.classList.add('no-intro');
-    var g = $('.gal'); if (g) g.classList.add('statico');
+    var g = $('.lv'); if (g) g.classList.add('statico');
     fine();
     return;
   }
@@ -107,17 +107,86 @@
   gsap.from('.voce', { y: 40, autoAlpha: 0, duration: 1, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: '.tratt-lista', start: 'top 85%' } });
   gsap.from('.occhio', { scaleY: 0, transformOrigin: '50% 50%', duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.occhio', start: 'top 85%' } });
 
-  /* ── galleria: il mazzo si apre a ventaglio ── */
-  var carte = $$('.mazzo li'), n = carte.length, mezzo = (n - 1) / 2;
-  carte.forEach(function (c, i) { gsap.set(c, { rotate: (i % 2 ? 1 : -1) * (2 + i), y: -i * 2, zIndex: i }); });
-  var passo = mobile ? Math.min(innerWidth * 0.095, 40) : Math.min(innerWidth * 0.1, 150);
-  var aperto = gsap.timeline({ scrollTrigger: { trigger: '.gal-scena', start: 'top top', end: '+=' + Math.round(innerHeight * (mobile ? 1.1 : 1.3)), pin: true, scrub: 0.8, anticipatePin: 1 } });
-  carte.forEach(function (c, i) {
-    var k = i - mezzo;
-    aperto.to(c, { x: k * passo, y: Math.abs(k) * Math.abs(k) * (mobile ? 6 : 10) - 10, rotate: k * (mobile ? 8 : 7), scale: 1 - Math.abs(k) * 0.03, ease: 'power2.inOut', duration: 1 }, 0.1 + Math.abs(k) * 0.08);
-  });
-  aperto.to('.gal-nota', { autoAlpha: 0, duration: 0.2 }, 0);
-  gsap.from('.mazzo', { scale: 0.7, rotate: -8, autoAlpha: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.gal', start: 'top 70%' } });
+  /* ── galleria: binario di card che scorrono, ruotano e si girano sull'asse ── */
+  (function () {
+    var lv = $('[data-lavori]'), pann = $('.lv-pannello'), scena = $('.lv-scena');
+    var carte = $$('.lv-card'), imgs = carte.map(function (c) { return $('img', c); }), n = carte.length;
+    var stato = { p: 0 }, entra = carte.map(function () { return 0; });
+    var nEl = $('[data-lv-n]'), prev = $('[data-lv-prev]'), next = $('[data-lv-next]');
+    $('[data-lv-tot]').textContent = String(n).padStart(2, '0');
+
+    function disegna() {
+      var w = carte[0].offsetWidth, passo = w * (mobile ? 0.8 : 1.06);
+      for (var i = 0; i < n; i++) {
+        var d = i - stato.p, ad = Math.abs(d), sg = d < 0 ? -1 : 1, e = entra[i];
+        var x = sg * (Math.min(ad, 1) * passo + Math.max(0, ad - 1) * passo * 0.82);
+        var y = -Math.min(ad, 2.5) * 16 + (1 - e) * 180;
+        var z = -Math.min(ad, 3) * 110;
+        var ry = Math.max(-2.6, Math.min(2.6, d)) * 24;
+        var rz = Math.max(-2, Math.min(2, d)) * 2.2;
+        var rx = (1 - e) * -88;
+        var sc = 1 - Math.min(ad, 3) * 0.06;
+        carte[i].style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,' + z.toFixed(1) + 'px) rotateY(' + ry.toFixed(2) + 'deg) rotateZ(' + rz.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+        carte[i].style.zIndex = 100 - Math.round(ad * 10);
+        carte[i].style.opacity = (ad > 3.4 ? 0 : 1) * Math.min(1, e * 1.4);
+        imgs[i].style.transform = 'translateX(' + (-Math.max(-2, Math.min(2, d)) * 5).toFixed(2) + '%) scale(1.12)';
+      }
+      var k = Math.round(stato.p);
+      nEl.textContent = String(k + 1).padStart(2, '0');
+      prev.disabled = stato.p < 0.3; next.disabled = stato.p > n - 1.3;
+    }
+
+    var altezza = function () { return Math.round(innerHeight * (mobile ? 0.55 : 0.6) * (n - 1)); };
+    var st = ScrollTrigger.create({
+      trigger: pann, start: 'center center', end: function () { return '+=' + altezza(); },
+      pin: lv, pinSpacing: true, anticipatePin: 1, scrub: true, invalidateOnRefresh: true,
+      animation: gsap.to(stato, { p: n - 1, ease: 'none', duration: 1, onUpdate: disegna })
+    });
+    function vaiA(i) {
+      i = Math.max(0, Math.min(n - 1, i));
+      var y = st.start + (st.end - st.start) * (i / (n - 1));
+      window.scrollTo({ top: y + 1, behavior: 'smooth' });
+    }
+    prev.addEventListener('click', function () { vaiA(Math.round(stato.p) - 1); });
+    next.addEventListener('click', function () { vaiA(Math.round(stato.p) + 1); });
+
+    /* trascinando di lato (dito o mouse) le card scorrono */
+    var tr = null;
+    scena.style.touchAction = 'pan-y';
+    scena.addEventListener('pointerdown', function (e) { tr = { x: e.clientX, y0: scrollY }; });
+    addEventListener('pointermove', function (e) {
+      if (!tr) return;
+      var dx = e.clientX - tr.x;
+      if (Math.abs(dx) > 6) window.scrollTo(0, tr.y0 - dx * ((st.end - st.start) / (n - 1)) / (carte[0].offsetWidth * 0.8));
+    });
+    addEventListener('pointerup', function () {
+      if (!tr) return; tr = null;
+      vaiA(Math.round(stato.p));
+    });
+
+    /* all'ingresso le card si girano sull'asse x una dopo l'altra */
+    var proxy = { t: 0 };
+    gsap.to(proxy, { t: 1, duration: 1.8, ease: 'none', scrollTrigger: { trigger: pann, start: 'top 75%' }, onUpdate: function () {
+      for (var i = 0; i < n; i++) {
+        var u = Math.max(0, Math.min(1, (proxy.t * 1.8 - i * 0.12)));
+        entra[i] = 1 - Math.pow(1 - u, 3) + Math.sin(u * Math.PI) * 0.06;
+      }
+      disegna();
+    } });
+
+    /* titoli: la parola gigante si gira lettera per lettera */
+    if (window.SplitText) {
+      var g = SplitText.create('.lv-gigante', { type: 'chars', aria: 'none' });
+      gsap.set('.lv-gigante', { perspective: 600 });
+      gsap.from(g.chars, { rotateX: -100, yPercent: 60, autoAlpha: 0, transformOrigin: '50% 100%', duration: 1.2, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: pann, start: 'top 80%' } });
+      $$('.lv-titolo span').forEach(function (r, i) {
+        gsap.from(r, { xPercent: i ? 12 : -12, autoAlpha: 0, duration: 1.3, ease: 'expo.out', delay: i * 0.12, scrollTrigger: { trigger: '.lv-testa', start: 'top 85%' } });
+      });
+    }
+    gsap.from('.lv-sotto, .lv-mini', { y: 20, autoAlpha: 0, duration: 1, ease: 'expo.out', stagger: 0.15, scrollTrigger: { trigger: '.lv-testa', start: 'top 80%' } });
+    gsap.fromTo(pann, { clipPath: 'inset(8% 6% 8% 6% round 40px)' }, { clipPath: 'inset(0% 0% 0% 0% round 6px)', duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: pann, start: 'top 85%' } });
+    disegna();
+  })();
 
   /* prima e dopo: la linea al centro si disegna */
   gsap.fromTo('.pd-foto', { '--linea-pd': 0 }, { '--linea-pd': 1, duration: 1.2, ease: 'expo.inOut', delay: 0.6, scrollTrigger: { trigger: '.pd-foto', start: 'top 80%' } });

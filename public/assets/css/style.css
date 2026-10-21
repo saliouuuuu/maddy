@@ -191,16 +191,58 @@ html:not(.js) .voce-corpo { grid-template-rows: 1fr; }
   .anteprima img { width: 100%; height: 100%; object-fit: cover; }
 }
 
-/* ── GALLERIA: mazzo che si apre a ventaglio ── */
-.gal { position: relative; background: var(--crema-2); }
-.gal-scena { position: relative; min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; padding-block: 6rem 2rem; overflow: hidden; }
-.gal-testa { display: grid; gap: 1rem; }
-.mazzo { position: relative; place-self: center; width: min(46vw, 250px); aspect-ratio: 4 / 5; margin-block: 2rem; }
-.mazzo li { position: absolute; inset: 0; border-radius: 999px 999px 18px 18px; overflow: hidden; background: var(--cipria); border: 4px solid #fbf7f2; box-shadow: 0 24px 50px -28px rgba(43, 30, 26, .6); will-change: transform; }
-.mazzo img { width: 100%; height: 100%; object-fit: cover; }
-html:not(.js) .mazzo, .statico .mazzo { position: static; width: 100%; aspect-ratio: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
-html:not(.js) .mazzo li, .statico .mazzo li { position: relative; aspect-ratio: 4 / 5; }
-.gal-nota { font-size: .72rem; letter-spacing: .24em; text-transform: uppercase; color: var(--cacao-3); text-align: center; }
+/* ── GALLERIA: pannello scuro, titolo largo, binario di card che ruotano sull'asse ── */
+@font-face { font-family: 'Syncopate'; font-style: normal; font-weight: 700; font-display: swap; src: url('../fonts/syncopate-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Jost'; font-style: italic; font-weight: 100 900; font-display: swap; src: url('../fonts/jost-latin-wght-italic.woff2') format('woff2'); }
+.gal { position: relative; overflow: hidden; background:
+  radial-gradient(60% 45% at 15% 10%, rgba(160, 110, 80, .55), transparent 70%),
+  radial-gradient(50% 40% at 85% 5%, rgba(120, 78, 52, .5), transparent 70%),
+  radial-gradient(70% 50% at 50% 100%, rgba(150, 100, 70, .45), transparent 70%),
+  #C9A38A; }
+.gal::before { content: ""; position: absolute; inset: -20%; pointer-events: none; opacity: .35; filter: blur(40px);
+  background: radial-gradient(30% 20% at 30% 30%, #6e4430, transparent 70%), radial-gradient(25% 18% at 70% 60%, #f3dccb, transparent 70%), radial-gradient(20% 15% at 20% 80%, #5a3626, transparent 70%);
+  animation: fumo 26s ease-in-out infinite alternate; }
+@keyframes fumo { to { transform: translate(6%, -4%) rotate(8deg) scale(1.1); } }
+.lv { position: relative; padding-block: clamp(4rem, 3rem + 5vw, 7rem) clamp(3rem, 6vw, 5rem); }
+.lv-testa { display: grid; gap: 1.2rem; margin-bottom: clamp(1.8rem, 4vw, 3rem); }
+@media (min-width: 900px) { .lv-testa { grid-template-columns: 1fr 1fr; align-items: center; } }
+.lv-titolo { font-family: 'Syncopate', 'Helvetica Neue', Arial, sans-serif; font-weight: 700; font-size: clamp(1.7rem, 1rem + 3.4vw, 3.4rem); line-height: 1.02; letter-spacing: .02em; color: #3a1f14; text-transform: lowercase; }
+.lv-titolo span { display: block; }
+.lv-titolo span:first-letter { text-transform: uppercase; }
+.lv-sotto { font-style: italic; font-size: clamp(1rem, .95rem + .3vw, 1.2rem); line-height: 1.45; color: #2f1a12; max-width: 28rem; }
+.lv-pannello { position: relative; margin-inline: max(10px, calc((100% - 1240px) / 2 + var(--gut))) max(10px, calc((100% - 1240px) / 2 + var(--gut-d))); padding: clamp(1.6rem, 4vw, 3.4rem) 0 clamp(1.6rem, 3vw, 2.6rem); background: #17110f; color: #f4ece6; border-radius: 6px; box-shadow: 0 0 0 clamp(8px, 1.4vw, 14px) rgba(110, 72, 52, .55), 0 50px 90px -40px rgba(30, 15, 8, .8); overflow: hidden; isolation: isolate; }
+.lv-pannello-testa { display: grid; gap: 1rem; padding-inline: clamp(1.2rem, 4vw, 3.6rem); align-items: center; }
+@media (min-width: 900px) { .lv-pannello-testa { grid-template-columns: 15rem 1fr; gap: 2rem; } }
+.lv-mini { font-style: italic; font-size: .92rem; line-height: 1.35; color: rgba(244, 236, 230, .85); max-width: 16rem; order: 2; }
+@media (min-width: 900px) { .lv-mini { order: 0; } }
+.lv-gigante { font-family: 'Syncopate', 'Helvetica Neue', Arial, sans-serif; font-weight: 700; font-size: clamp(2.6rem, 13vw, 8.6rem); line-height: .9; letter-spacing: .01em; white-space: nowrap; text-align: center; }
+@media (min-width: 900px) { .lv-gigante { text-align: right; } }
+.lv-gigante span { display: inline-block; }
+.lv-i { font-size: .62em; vertical-align: baseline; }
+.lv-scena { position: relative; perspective: 1300px; perspective-origin: 50% 40%; height: clamp(21rem, 70vw, min(30rem, 56vh)); cursor: grab; margin-top: clamp(1rem, 3vw, 2.4rem); }
+.lv-binario { position: absolute; inset: 0; transform-style: preserve-3d; }
+.lv-card { position: absolute; left: 50%; top: 50%; width: clamp(11.5rem, 46vw, 16.5rem); aspect-ratio: 3 / 4.15; margin: calc(clamp(11.5rem, 46vw, 16.5rem) * -.69) 0 0 calc(clamp(11.5rem, 46vw, 16.5rem) * -.5); transform-style: preserve-3d; will-change: transform; }
+.lv-card figure { position: relative; width: 100%; height: 100%; border-radius: 22px; overflow: hidden; background: #3a2a22; box-shadow: 0 30px 50px -28px rgba(0, 0, 0, .9); backface-visibility: hidden; }
+.lv-card img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); transform-origin: 50% 50%; }
+.lv-card figure::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23, 17, 15, 0) 45%, rgba(23, 17, 15, .72)); pointer-events: none; }
+.lv-card figcaption { position: absolute; left: 1rem; right: 1rem; bottom: 1rem; z-index: 2; font-size: clamp(.8rem, .7rem + .4vw, 1.05rem); font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: #fff; line-height: 1.2; }
+.lv-chip { position: absolute; left: .9rem; top: .9rem; z-index: 2; padding: .32rem .8rem; border-radius: 999px; background: rgba(255, 255, 255, .22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: .7rem; color: #fff; }
+.lv-frecce { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-top: clamp(1rem, 3vw, 2rem); }
+.lv-frecce button { width: 4.2rem; height: 2.8rem; border-radius: 999px; border: 1px solid rgba(244, 236, 230, .8); background: none; color: #f4ece6; cursor: pointer; display: grid; place-items: center; transition: background .4s, color .4s, opacity .4s; }
+.lv-frecce button:first-child { border-color: rgba(244, 236, 230, .3); }
+.lv-frecce button:hover { background: #f4ece6; color: #17110f; }
+.lv-frecce button:disabled { opacity: .3; cursor: default; background: none; color: #f4ece6; }
+.lv-frecce svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.lv-conta { min-width: 4.8rem; text-align: center; font-size: .8rem; letter-spacing: .14em; color: rgba(244, 236, 230, .6); font-variant-numeric: tabular-nums; }
+.lv-conta b { font-weight: 500; color: #f4ece6; }
+/* senza animazioni: una fila che si scorre col dito */
+.lv.statico .lv-scena, html:not(.js) .lv-scena { height: auto; perspective: none; }
+.lv.statico .lv-binario, html:not(.js) .lv-binario { position: static; display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 clamp(1.2rem, 4vw, 3.6rem) 1rem; }
+.lv.statico .lv-card, html:not(.js) .lv-card { position: relative; left: auto; top: auto; margin: 0; flex: none; scroll-snap-align: center; transform: none !important; }
+.lv.statico .lv-frecce, html:not(.js) .lv-frecce { display: none; }
+.gal .prima-dopo { position: relative; }
+.gal .pd-testo .occhiello, .gal .pd-frase em { color: #4a2a1c; }
+
 .prima-dopo { display: grid; gap: 2.4rem; padding-block: clamp(3rem, 6vw, 6rem) clamp(5rem, 8vw, 8rem); }
 @media (min-width: 900px) { .prima-dopo { grid-template-columns: auto 1fr; align-items: center; gap: clamp(3rem, 7vw, 8rem); } }
 .pd-foto { position: relative; width: min(84vw, 380px); border-radius: var(--r); overflow: hidden; }
@@ -306,6 +348,7 @@ html:not(.js) .mazzo li, .statico .mazzo li { position: relative; aspect-ratio: 
   .voce-corpo { transition: none; }
   .passi li { opacity: 1; }
   .seta { display: none; }
+  .gal::before { animation: none; }
 }
 
 .palpebra { transform-box: view-box; transition: transform .14s ease-in; }
