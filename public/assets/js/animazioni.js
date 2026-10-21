@@ -36,6 +36,7 @@
   gsap.set(lettere, { yPercent: 115, rotate: 8 });
   gsap.set('.hero .occhiello, .hero-frase, .hero .btn', { autoAlpha: 0, y: 24 });
   gsap.set('.giro', { autoAlpha: 0, scale: .6 });
+  gsap.set('.mini, .pil', { autoAlpha: 0 });
 
   function entraHero(t) {
     var tl = gsap.timeline({ delay: t || 0 });
@@ -44,7 +45,9 @@
       .fromTo('.hero-foto .arco', { clipPath: 'inset(100% 0 0 0 round 999px 999px 22px 22px)' }, { clipPath: 'inset(0% 0 0 0 round 999px 999px 22px 22px)', duration: 1.5, ease: 'expo.inOut' }, 0)
       .add(tracciaSopracciglio, 0.7)
       .to('.hero .occhiello, .hero-frase, .hero .btn', { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: 0.12 }, 0.6)
-      .to('.giro', { autoAlpha: 1, scale: 1, duration: 1.2, ease: 'back.out(1.6)' }, 1);
+      .to('.giro', { autoAlpha: 1, scale: 1, duration: 1.2, ease: 'back.out(1.6)' }, 1)
+      .fromTo('.mini', { autoAlpha: 0, scale: 0.4, rotate: -25 }, { autoAlpha: 1, scale: 1, rotate: 7, duration: 1.3, ease: 'back.out(1.5)' }, 0.9)
+      .fromTo('.pil', { autoAlpha: 0, y: 30, scale: 0.7 }, { autoAlpha: 1, y: 0, scale: 1, duration: 1, ease: 'back.out(1.8)', stagger: 0.15 }, 1.1);
     return tl;
   }
 
@@ -218,6 +221,55 @@
   ['.come', '.piede'].forEach(function (sel) {
     ScrollTrigger.create({ trigger: sel, start: 'top 40px', end: 'bottom 40px', toggleClass: { targets: '#nav', className: 'su-scuro' } });
   });
+
+  /* ── chi sono: valori e firma scritta a mano ── */
+  gsap.from('.valori li', { y: 40, autoAlpha: 0, rotate: -2, duration: 1.1, ease: 'expo.out', stagger: 0.12, scrollTrigger: { trigger: '.valori', start: 'top 88%' } });
+  var firma = $('[data-firma] text');
+  if (firma) {
+    gsap.set(firma, { strokeDasharray: 900, strokeDashoffset: 900 });
+    gsap.timeline({ scrollTrigger: { trigger: '.firma', start: 'top 88%' } })
+      .to(firma, { strokeDashoffset: 0, duration: 2.4, ease: 'power1.inOut' })
+      .to(firma, { fill: '#A9844C', duration: 0.8, ease: 'power1.out' }, '-=0.6');
+  }
+
+  /* ── il metodo: la mappa del sopracciglio si disegna sul viso ── */
+  (function () {
+    var foto = $('[data-mv-foto]');
+    if (!foto) return;
+    var li = $$('.mv-punti li');
+    function accendi(i) { li.forEach(function (x, k) { x.classList.toggle('on', k <= i); }); }
+    var tl = gsap.timeline({ defaults: { ease: 'power2.inOut' }, scrollTrigger: mobile
+      ? { trigger: foto, start: 'top 75%', end: 'bottom 35%', scrub: 0.8 }
+      : { trigger: '.mv-scena', start: 'top top', end: '+=' + Math.round(innerHeight * 1.6), pin: true, scrub: 0.8 } });
+    tl.fromTo('.mv-foto img, .mv-linee', { scale: 1 }, { scale: 1.24, duration: 3, ease: 'none' }, 0)
+      .to('.mv-righello', { scaleX: 0, duration: 0.01 }, 0)
+      .fromTo('.mv-righello', { scaleX: 0 }, { scaleX: 1, duration: 0.6 }, 0)
+      .to('.pn', { scale: 1, duration: 0.3 }, 0.2);
+    [0, 1, 2].forEach(function (i) {
+      var t = 0.4 + i * 0.75;
+      tl.to('.g' + i, { strokeDashoffset: 0, duration: 0.5 }, t)
+        .to('.p' + i, { scale: 1, duration: 0.25, ease: 'back.out(3)' }, t + 0.42)
+        .to('.e' + i, { opacity: 1, duration: 0.25 }, t + 0.45)
+        .call(accendi, [i], t + 0.45);
+    });
+    tl.to('.mv-arco', { strokeDashoffset: 0, duration: 0.7 }, 2.7)
+      .to('.mv-guide path', { opacity: 0.35, duration: 0.3 }, 3);
+  })();
+
+  /* ── nastro di foto: la velocità segue lo scroll ── */
+  var righe = $$('.str-riga').map(function (r) { return r.getAnimations ? r.getAnimations()[0] : null; }).filter(Boolean);
+  if (righe.length) {
+    ScrollTrigger.create({ onUpdate: function (s) { var v = 1 + Math.min(6, Math.abs(s.getVelocity()) / 300); righe.forEach(function (a) { a.playbackRate = v; }); } });
+    gsap.ticker.add(function () { righe.forEach(function (a) { a.playbackRate += (1 - a.playbackRate) * 0.05; }); });
+  }
+  gsap.fromTo('.str-riga', { rotate: 2 }, { rotate: -1, ease: 'none', scrollTrigger: { trigger: '.striscia', start: 'top bottom', end: 'bottom top', scrub: true } });
+
+  /* ── invito: la frase si riempie parola per parola, il cerchio rotola dentro ── */
+  if (window.SplitText) {
+    var inv = SplitText.create('[data-riempi]', { type: 'words', wordsClass: 'parola', aria: 'none' });
+    gsap.to(inv.words, { color: function (i, el) { return el.closest('em') ? '#86642F' : '#2B1E1A'; }, stagger: 0.12, ease: 'none', scrollTrigger: { trigger: '.invito', start: 'top 70%', end: 'center 45%', scrub: true } });
+  }
+  gsap.from('.cerchio', { xPercent: 120, rotate: 220, autoAlpha: 0, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: '.invito', start: 'top 60%' } });
 
   /* ── nome in fondo: le lettere salgono a onda ── */
   gsap.from('.piede-nome .lettera', { yPercent: 100, autoAlpha: 0, duration: 1.2, ease: 'expo.out', stagger: 0.05, scrollTrigger: { trigger: '.piede', start: 'top 80%' } });

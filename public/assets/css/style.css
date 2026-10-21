@@ -77,11 +77,11 @@ html.no-intro .intro { display: none; }
 /* ── NAV ── */
 .nav { position: fixed; z-index: 60; top: max(10px, env(safe-area-inset-top, 0px)); left: 50%; translate: -50% 0; width: min(1180px, calc(100% - 20px)); transition: width .8s var(--ease); }
 .nav-in { display: flex; align-items: center; gap: .6rem; padding: .5rem .5rem .5rem 1rem; border-radius: 999px; background: rgba(246, 239, 231, .6); border: 1px solid rgba(255, 255, 255, .6); -webkit-backdrop-filter: blur(16px) saturate(1.3); backdrop-filter: blur(16px) saturate(1.3); box-shadow: 0 10px 40px -24px rgba(43, 30, 26, .45); }
-.nav.stretta { width: min(860px, calc(100% - 20px)); }
+.nav.stretta { width: min(1020px, calc(100% - 20px)); }
 .nav-logo { display: inline-flex; align-items: center; gap: .55rem; font-family: var(--serif); font-size: 1.25rem; line-height: 1; margin-right: auto; white-space: nowrap; }
 .nav-logo em { color: var(--oro); }
 .mono { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid var(--oro); font-size: .78rem; letter-spacing: -.02em; color: var(--oro); }
-.nav-link { display: none; gap: 1.7rem; font-size: .72rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; margin-right: 1rem; }
+.nav-link { display: none; gap: clamp(1rem, 1.6vw, 1.7rem); white-space: nowrap; font-size: .72rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; margin-right: 1rem; }
 .nav-link a { position: relative; padding-block: .3rem; }
 .nav-link a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--oro); transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
 .nav-link a:hover::after { transform: scaleX(1); transform-origin: left; }
@@ -371,3 +371,82 @@ html:not(.js) .voce-corpo { grid-template-rows: 1fr; }
 .piede-alto a { display: inline-block; padding-block: .55rem; }
 
 .sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── hero: pillole di vetro e miniatura ── */
+.pillole { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.pil { position: absolute; display: inline-flex; align-items: center; gap: .45rem; padding: .45rem .85rem .45rem .6rem; border-radius: 999px; white-space: nowrap; font-size: .7rem; font-weight: 500; letter-spacing: .06em; color: var(--cacao); background: rgba(251, 247, 242, .55); border: 1px solid rgba(255, 255, 255, .7); -webkit-backdrop-filter: blur(10px) saturate(1.3); backdrop-filter: blur(10px) saturate(1.3); box-shadow: 0 12px 30px -16px rgba(43, 30, 26, .5); animation: galleggia 6s ease-in-out infinite alternate; }
+.pil i { width: .45rem; height: .45rem; border-radius: 50%; background: var(--oro-tratto); box-shadow: 0 0 0 4px rgba(169, 132, 76, .2); }
+.pil--1 { left: -26%; top: 22%; }
+.pil--2 { right: -10%; top: 58%; animation-delay: -2s; }
+.pil--3 { right: -14%; bottom: 10%; animation-delay: -4s; }
+@keyframes galleggia { from { transform: translateY(-6px); } to { transform: translateY(8px); } }
+.mini { position: absolute; right: -8%; top: -10%; z-index: 3; width: 30%; aspect-ratio: 179 / 224; border-radius: 16px; overflow: hidden; border: 4px solid #fbf7f2; box-shadow: 0 20px 40px -20px rgba(43, 30, 26, .6); rotate: 7deg; }
+.mini img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 899px) { .pil--1 { left: -40%; } .pil--3 { right: -6%; bottom: 4%; } .mini { right: -4%; } }
+
+/* ── chi sono: valori e firma ── */
+.valori { display: grid; gap: .8rem; margin-top: .4rem; }
+@media (min-width: 560px) { .valori { grid-template-columns: repeat(3, 1fr); } }
+.valori li { display: grid; gap: .2rem; padding: 1rem 1.1rem 1.1rem; border-radius: 18px; background: #fbf7f2; border: 1px solid var(--linea); transition: transform .5s var(--ease), box-shadow .5s; }
+.valori li:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -26px rgba(43, 30, 26, .45); }
+.val-ico svg { width: 2.2rem; height: 2.2rem; fill: none; stroke: var(--oro-tratto); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.valori b { font-family: var(--serif); font-weight: 500; font-size: 1.35rem; line-height: 1.1; }
+.valori span:not(.val-ico) { font-size: .88rem; color: var(--cacao-2); line-height: 1.45; }
+.firma { width: min(220px, 60%); height: auto; overflow: visible; margin-block: -.4rem -.6rem; }
+.firma text { font-family: var(--serif); font-style: italic; font-size: 92px; fill: transparent; stroke: var(--oro-tratto); stroke-width: 1.2; }
+
+/* ── il metodo: mappatura del sopracciglio ── */
+.mappa-viso { position: relative; background: #fbf7f2; overflow: hidden; }
+.mv-scena { min-height: 100vh; min-height: 100svh; display: grid; align-items: center; padding-block: 5.5rem 3rem; }
+.mv-griglia { display: grid; gap: 2rem; }
+@media (min-width: 900px) { .mv-griglia { grid-template-columns: .9fr 1.1fr; gap: clamp(3rem, 6vw, 6rem); align-items: center; } }
+.mv-testo { display: grid; gap: 1.2rem; }
+.mv-punti { display: grid; gap: .1rem; margin-top: .4rem; border-top: 1px solid var(--linea); }
+.mv-punti li { display: grid; grid-template-columns: 2.4rem 1fr; padding-block: .8rem; border-bottom: 1px solid var(--linea); color: var(--cacao-2); opacity: .4; transition: opacity .5s, color .5s; }
+.mv-punti li span { font-size: .72rem; letter-spacing: .18em; color: var(--oro); padding-top: .2rem; }
+.mv-punti li b { font-family: var(--serif); font-weight: 500; font-size: 1.25rem; color: var(--cacao); margin-right: .35rem; }
+.mv-punti li.on, html:not(.js) .mv-punti li { opacity: 1; }
+.mv-foto { position: relative; aspect-ratio: 778 / 732; border-radius: var(--r); overflow: hidden; background: var(--cipria); box-shadow: 0 40px 70px -40px rgba(43, 30, 26, .55); }
+.mv-foto img { width: 100%; height: 100%; object-fit: cover; transform-origin: 34% 30%; }
+.mv-linee { position: absolute; inset: 0; width: 100%; height: 100%; transform-origin: 34% 30%; }
+.mv-guide path { fill: none; stroke: #f3d9a4; stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 4px rgba(243, 217, 164, .8)); }
+.mv-punti-svg circle { fill: #fff6e3; stroke: var(--oro-tratto); stroke-width: 3; transform-box: fill-box; transform-origin: center; scale: 0; }
+.mv-etichette text { font-family: var(--sans); font-size: 22px; font-weight: 600; letter-spacing: 5px; fill: #fff6e3; paint-order: stroke; stroke: rgba(43, 30, 26, .45); stroke-width: 4px; opacity: 0; }
+.mv-arco { fill: none; stroke: #f3d9a4; stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(243, 217, 164, .9)); }
+.mv-righello { position: absolute; left: 0; right: 0; bottom: 0; height: 22px; background: repeating-linear-gradient(90deg, rgba(255, 246, 227, .85) 0 1px, transparent 1px 10px), repeating-linear-gradient(90deg, rgba(255, 246, 227, .95) 0 1px, transparent 1px 50px); -webkit-mask: linear-gradient(transparent 40%, #000); mask: linear-gradient(transparent 40%, #000); opacity: .8; transform-origin: left; }
+html:not(.js) .mv-guide path, html:not(.js) .mv-arco { stroke-dashoffset: 0; }
+html:not(.js) .mv-punti-svg circle { scale: 1; }
+html:not(.js) .mv-etichette text { opacity: 1; }
+
+/* ── nastro di foto inclinato ── */
+.striscia { position: relative; overflow: hidden; padding-block: clamp(2rem, 5vw, 3.6rem); background: var(--crema); }
+.str-riga { display: flex; gap: .8rem; width: max-content; rotate: -3deg; margin-block: .4rem; animation: nastro 48s linear infinite; }
+.str-riga--2 { animation-direction: reverse; animation-duration: 56s; rotate: -3deg; margin-left: -10rem; }
+.str-riga li { width: clamp(7.5rem, 22vw, 12rem); aspect-ratio: 4 / 5; border-radius: 999px 999px 14px 14px; overflow: hidden; background: var(--cipria); flex: none; }
+.str-riga li:nth-child(even) { border-radius: 14px; aspect-ratio: 1; align-self: center; }
+.str-riga img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.92); transition: filter .5s, transform .8s var(--ease); }
+.str-riga li:hover img { transform: scale(1.08); filter: saturate(1.1); }
+
+/* ── invito: frase gigante che si riempie e bottone circolare ── */
+.invito { position: relative; overflow: hidden; padding-block: clamp(5rem, 4rem + 6vw, 9rem); background: radial-gradient(60% 70% at 80% 50%, rgba(232, 207, 196, .9), transparent 70%), var(--crema); }
+.invito-in { display: grid; gap: 2rem; justify-items: start; }
+.invito-titolo { font-family: var(--serif); font-weight: 400; font-size: clamp(3rem, 1.6rem + 7vw, 8rem); line-height: .95; letter-spacing: -0.02em; max-width: 12ch; }
+.invito-titolo em { color: var(--oro); }
+.invito-titolo .parola { color: rgba(43, 30, 26, .14); }
+.cerchio { position: relative; display: grid; place-items: center; width: clamp(9rem, 32vw, 12rem); aspect-ratio: 1; border-radius: 50%; background: var(--cacao); color: var(--crema); justify-self: end; }
+.cerchio svg { position: absolute; inset: 6%; width: 88%; height: 88%; animation: gira 18s linear infinite; }
+.cerchio text { font-family: var(--sans); font-size: 12.5px; font-weight: 500; letter-spacing: 2.6px; text-transform: uppercase; fill: var(--oro-chiaro); }
+.cerchio span { font-family: var(--serif); font-style: italic; font-size: 1.6rem; transition: transform .5s var(--ease); }
+.cerchio:hover span { transform: scale(1.12); }
+@media (min-width: 900px) { .invito-in { grid-template-columns: 1fr auto; align-items: end; } .invito-in .occhiello { grid-column: 1 / -1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pil, .str-riga, .cerchio svg { animation: none; }
+  .mv-guide path, .mv-arco { stroke-dashoffset: 0; }
+  .mv-punti-svg circle { scale: 1; }
+  .mv-etichette text { opacity: 1; }
+  .mv-punti li { opacity: 1; }
+  .invito-titolo .parola { color: inherit; }
+}
+
+.mv-testo .titolo { font-size: clamp(2.6rem, 1.6rem + 3.4vw, 4.6rem); }
