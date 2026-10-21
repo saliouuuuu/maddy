@@ -29,6 +29,19 @@
   $$('#menu a').forEach(function (a) { a.addEventListener('click', function () { menu.classList.remove('aperto'); apri.setAttribute('aria-expanded', false); document.body.style.overflow = ''; }); });
   addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.classList.contains('aperto')) menuAperto(false); });
 
+  /* link interni: scorrimento morbido senza scroll-behavior nel CSS (disturba i blocchi di GSAP) */
+  $$('a[href^="#"]').forEach(function (a) {
+    var id = a.getAttribute('href');
+    if (id.length < 2) return;
+    a.addEventListener('click', function (e) {
+      var t = document.querySelector(id);
+      if (!t) return;
+      e.preventDefault();
+      t.scrollIntoView({ behavior: fermo ? 'auto' : 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', id);
+    });
+  });
+
   /* trattamenti: una voce aperta alla volta */
   var voci = $$('.voce');
   voci.forEach(function (v) {
@@ -58,6 +71,25 @@
     $('.tratt-lista').addEventListener('pointerleave', function () { ant.classList.remove('on'); vivo = false; });
   }
 
+  /* prima e dopo: cursore da trascinare (dito, mouse o tastiera) */
+  var pd = $('[data-pd]');
+  if (pd) {
+    var range = $('.pd-range', pd), e1 = $('.pd-et--1', pd), e2 = $('.pd-et--2', pd);
+    window.pdImposta = function (v) {
+      v = Math.max(0, Math.min(100, v));
+      pd.style.setProperty('--pos', v + '%');
+      range.value = Math.round(v);
+      e1.style.opacity = v < 14 ? 0 : 1; e2.style.opacity = v > 86 ? 0 : 1;
+    };
+    range.addEventListener('input', function () { pdImposta(+range.value); });
+    var trascina = false;
+    function daPunto(x) { var r = pd.getBoundingClientRect(); pdImposta((x - r.left) / r.width * 100); }
+    pd.addEventListener('pointerdown', function (e) { trascina = true; daPunto(e.clientX); });
+    addEventListener('pointermove', function (e) { if (trascina) daPunto(e.clientX); });
+    addEventListener('pointerup', function () { trascina = false; });
+    addEventListener('pointercancel', function () { trascina = false; });
+  }
+
   /* modulo: prepara il messaggio e apre WhatsApp */
   var form = $('#richiesta'), stato = $('.modulo-stato', form);
   function link(testo) { return 'https://wa.me/' + WA_NUMERO + '?text=' + encodeURIComponent(testo); }
@@ -81,8 +113,15 @@
       f.title = 'Mappa: Corso Nizza 11, Cuneo';
       f.loading = 'lazy';
       f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.tabIndex = -1;
       mappa.textContent = '';
       mappa.appendChild(f);
+      var attiva = document.createElement('button');
+      attiva.type = 'button';
+      attiva.className = 'mappa-attiva';
+      attiva.textContent = 'Tocca per usare la mappa';
+      attiva.addEventListener('click', function () { mappa.classList.add('attiva'); f.tabIndex = 0; attiva.remove(); });
+      mappa.appendChild(attiva);
     };
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { carica(); io.disconnect(); } }, { rootMargin: '400px 0px' });

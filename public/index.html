@@ -197,7 +197,14 @@
     </div>
   </div>
   <div class="cont prima-dopo">
-    <figure class="pd-foto rivela"><img src="assets/img/prima-dopo-sopracciglia.webp" width="390" height="518" loading="lazy" decoding="async" alt="Confronto prima e dopo: a sinistra il sopracciglio prima, a destra il sopracciglio ridisegnato"><span class="pd-et pd-et--1">Prima</span><span class="pd-et pd-et--2">Dopo</span></figure>
+    <figure class="pd" data-pd style="--pos:50%">
+      <img class="pd-dopo" src="assets/img/dopo-sopracciglio.webp" width="300" height="380" loading="lazy" decoding="async" alt="Dopo: sopracciglio ridisegnato, più pieno e definito">
+      <div class="pd-prima"><img src="assets/img/prima-sopracciglio.webp" width="300" height="380" loading="lazy" decoding="async" alt="Prima: sopracciglio rado e poco definito"></div>
+      <span class="pd-et pd-et--1" aria-hidden="true">Prima</span><span class="pd-et pd-et--2" aria-hidden="true">Dopo</span>
+      <span class="pd-maniglia" aria-hidden="true"><i></i></span>
+      <input class="pd-range" type="range" min="0" max="100" value="50" aria-label="Confronto prima e dopo: sposta per vedere il prima o il dopo">
+      <figcaption class="sr">Trascina il cursore: a sinistra il sopracciglio prima del trattamento, a destra dopo.</figcaption>
+    </figure>
     <div class="pd-testo">
       <p class="occhiello">Prima e dopo</p>
       <p class="pd-frase" data-righe>Lo stesso viso, <em>uno sguardo più ordinato.</em></p>

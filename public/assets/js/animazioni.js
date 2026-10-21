@@ -20,6 +20,7 @@
     return;
   }
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
   if (window.SplitText) gsap.registerPlugin(SplitText);
   var mobile = innerWidth < 900;
 
@@ -139,7 +140,7 @@
     var altezza = function () { return Math.round(innerHeight * (mobile ? 0.55 : 0.6) * (n - 1)); };
     var st = ScrollTrigger.create({
       trigger: pann, start: 'center center', end: function () { return '+=' + altezza(); },
-      pin: lv, pinSpacing: true, anticipatePin: 1, scrub: true, invalidateOnRefresh: true,
+      pin: lv, pinSpacing: true, scrub: true, invalidateOnRefresh: true,
       animation: gsap.to(stato, { p: n - 1, ease: 'none', duration: 1, onUpdate: disegna })
     });
     function vaiA(i) {
@@ -150,19 +151,23 @@
     prev.addEventListener('click', function () { vaiA(Math.round(stato.p) - 1); });
     next.addEventListener('click', function () { vaiA(Math.round(stato.p) + 1); });
 
-    /* trascinando di lato (dito o mouse) le card scorrono */
+    /* trascinando di lato le card scorrono; un gesto verticale resta uno scroll normale */
     var tr = null;
     scena.style.touchAction = 'pan-y';
-    scena.addEventListener('pointerdown', function (e) { tr = { x: e.clientX, y0: scrollY }; });
+    scena.addEventListener('pointerdown', function (e) { tr = { x: e.clientX, y: e.clientY, y0: scrollY, attivo: false }; });
     addEventListener('pointermove', function (e) {
       if (!tr) return;
-      var dx = e.clientX - tr.x;
-      if (Math.abs(dx) > 6) window.scrollTo(0, tr.y0 - dx * ((st.end - st.start) / (n - 1)) / (carte[0].offsetWidth * 0.8));
+      var dx = e.clientX - tr.x, dy = e.clientY - tr.y;
+      if (!tr.attivo) {
+        if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) { tr = null; return; }
+        if (Math.abs(dx) < 12) return;
+        tr.attivo = true;
+      }
+      window.scrollTo(0, tr.y0 - dx * ((st.end - st.start) / (n - 1)) / (carte[0].offsetWidth * 0.8));
     });
-    addEventListener('pointerup', function () {
-      if (!tr) return; tr = null;
-      vaiA(Math.round(stato.p));
-    });
+    function fineTrascina() { if (tr && tr.attivo) vaiA(Math.round(stato.p)); tr = null; }
+    addEventListener('pointerup', fineTrascina);
+    addEventListener('pointercancel', function () { tr = null; });
 
     /* all'ingresso le card si girano sull'asse x una dopo l'altra */
     var proxy = { t: 0 };
@@ -189,8 +194,15 @@
   })();
 
   /* prima e dopo: la linea al centro si disegna */
-  gsap.fromTo('.pd-foto', { '--linea-pd': 0 }, { '--linea-pd': 1, duration: 1.2, ease: 'expo.inOut', delay: 0.6, scrollTrigger: { trigger: '.pd-foto', start: 'top 80%' } });
-  gsap.from('.pd-et', { y: -20, autoAlpha: 0, duration: 0.8, ease: 'back.out(2)', stagger: 0.15, delay: 1, scrollTrigger: { trigger: '.pd-foto', start: 'top 80%' } });
+  /* il cursore del prima/dopo si muove da solo una volta, per far capire che si trascina */
+  if (window.pdImposta) {
+    var pdv = { v: 50 };
+    gsap.timeline({ scrollTrigger: { trigger: '.pd', start: 'top 70%' } })
+      .from('.pd', { clipPath: 'inset(100% 0% 0% 0% round 22px)', duration: 1.3, ease: 'expo.inOut' })
+      .to(pdv, { v: 82, duration: 0.9, ease: 'power2.inOut', onUpdate: function () { pdImposta(pdv.v); } }, '-=.2')
+      .to(pdv, { v: 18, duration: 1.2, ease: 'power2.inOut', onUpdate: function () { pdImposta(pdv.v); } })
+      .to(pdv, { v: 50, duration: 0.9, ease: 'power2.inOut', onUpdate: function () { pdImposta(pdv.v); } });
+  }
 
   /* ── come funziona: la sezione scura si allarga e il filo d'oro si disegna ── */
   gsap.fromTo('.come', { clipPath: 'inset(6% 5% 0% 5% round 48px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none', scrollTrigger: { trigger: '.come', start: 'top bottom', end: 'top 25%', scrub: true } });
