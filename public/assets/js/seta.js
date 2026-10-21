@@ -12,6 +12,8 @@
     { c: '201,160,142', r: 0.36, sx: 0.00019, sy: 0.00026, f: 2.4, d: 1 }
   ];
   if (innerWidth < 700) macchie.pop();
+  var scintille = [];
+  for (var k = 0; k < (innerWidth < 700 ? 22 : 40); k++) scintille.push({ x: Math.random(), y: Math.random(), r: 0.6 + Math.random() * 1.6, v: 0.00004 + Math.random() * 0.00012, f: Math.random() * 6.28 });
 
   function misura() {
     W = c.width = Math.max(2, Math.round(c.clientWidth * scala));
@@ -34,6 +36,13 @@
       g.addColorStop(1, 'rgba(' + b.c + ',0)');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
+    }
+    for (var j = 0; j < scintille.length; j++) {
+      var q = scintille[j];
+      q.y -= q.v * 16; if (q.y < -0.02) { q.y = 1.02; q.x = Math.random(); }
+      var a = 0.35 + 0.35 * Math.sin(t * 0.002 + q.f);
+      ctx.fillStyle = 'rgba(216,190,140,' + a.toFixed(2) + ')';
+      ctx.beginPath(); ctx.arc((q.x + Math.sin(t * 0.0004 + q.f) * 0.02) * W, q.y * H, q.r * scala * 2.2, 0, 6.283); ctx.fill();
     }
     requestAnimationFrame(disegna);
   }
