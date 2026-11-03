@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skin Beauty Lounge · Centro estetico a Bra</title>
+<meta name="description" content="Skin Beauty Lounge, centro estetico in Via Adua 1 a Bra (CN). Trattamenti viso e corpo. Prenota su WhatsApp.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FBF3EA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cipria:#F4D9D9;
+    --crema:#FBF3EA;
+    --bordeaux:#4A0E1A;
+    --rosa:#C4506C;
+    --testo:#3A1219;
+    --testo-soft:#6B3A44;
+    --linea:rgba(74,14,26,.14);
+    --r-xl:40px;
+    --r-lg:28px;
+    --gutter:20px;
+    --serif:"Cormorant Garamond", "Playfair Display", Georgia, serif;
+    --sans:"DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--crema);color:var(--testo);
+    font-family:var(--sans);font-size:1rem;line-height:1.6;
+    overflow-x:hidden;
+    padding-bottom:calc(88px + env(safe-area-inset-bottom));
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  .wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 var(--gutter)}
+  section{padding:72px 0}
+  .crema{background:var(--crema);color:var(--testo)}
+  .bordeaux{background:var(--bordeaux);color:var(--crema)}
+
+  .eyebrow{
+    display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--rosa);margin:0 0 14px;
+  }
+  .bordeaux .eyebrow{color:#F1BFC6}
+  h1,h2{font-family:var(--serif);font-style:italic;font-weight:500;line-height:1.02;margin:0;letter-spacing:-.01em}
+  h2{font-size:clamp(2.6rem, 10vw, 4.2rem)}
+  .lead{font-size:1.0625rem;color:var(--testo-soft);max-width:34ch;margin:16px 0 0}
+  .bordeaux .lead{color:#EBD3D3}
+
+  /* ---------- Pulsanti lucidi a pillola ---------- */
+  .gel{
+    position:relative;isolation:isolate;
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    min-height:58px;padding:16px 34px;border:0;border-radius:999px;
+    font-family:var(--sans);font-weight:600;font-size:1.125rem;letter-spacing:.01em;
+    color:#fff;white-space:nowrap;text-decoration:none;text-shadow:0 1px 1px rgba(74,14,26,.35);
+    background:linear-gradient(180deg,#E58AA0 0%,#C4506C 55%,#A93A55 100%);
+    box-shadow:inset 0 2px 3px rgba(255,255,255,.55), inset 0 -3px 6px rgba(74,14,26,.35), 0 8px 18px rgba(169,58,85,.35);
+    transition:transform .2s ease, filter .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .gel::before{
+    content:"";position:absolute;z-index:-1;pointer-events:none;
+    top:3px;left:8%;right:8%;height:46%;
+    border-radius:999px 999px 40px 40px / 999px 999px 18px 18px;
+    background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 100%);
+  }
+  .gel svg{width:22px;height:22px;flex:none}
+  .gel:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  .gel:active{transform:translateY(1px);filter:brightness(1)}
+  .gel:focus-visible{outline:3px solid var(--bordeaux);outline-offset:4px}
+
+  .gel--chiaro{
+    color:var(--bordeaux);text-shadow:0 1px 0 rgba(255,255,255,.6);
+    background:linear-gradient(180deg,#FBE3E3 0%,#F1BFC6 100%);
+    box-shadow:inset 0 2px 3px rgba(255,255,255,.75), inset 0 -3px 6px rgba(169,58,85,.28), 0 8px 18px rgba(0,0,0,.25);
+  }
+  .gel--chiaro::before{background:linear-gradient(180deg,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 100%)}
+  .gel--chiaro:focus-visible{outline-color:var(--crema)}
+
+  /* Pulsanti piatti */
+  .flat{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:48px;padding:12px 24px;border-radius:999px;
+    font-weight:600;font-size:1rem;text-decoration:none;
+    border:1.5px solid var(--bordeaux);color:var(--bordeaux);background:transparent;
+    transition:background .2s ease, color .2s ease;
+  }
+  .flat:hover{background:var(--bordeaux);color:var(--crema)}
+  .flat:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:28px 0 64px;position:relative;overflow:hidden}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:40px}
+  .marchio{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.35rem;line-height:1;text-decoration:none}
+  .top a.tel{font-size:.9rem;font-weight:500;text-decoration:none;color:var(--testo-soft);white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
+  .hero-grid{display:grid;gap:40px}
+  .hero h1{font-size:clamp(3.6rem, 17vw, 7rem);color:var(--bordeaux)}
+  .hero h1 span{display:block}
+  .hero h1 .l2{padding-left:.55em}
+  .hero .lead{margin-top:22px}
+  .hero-cta{margin-top:30px;display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+  .rating{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 16px;border-radius:999px;background:var(--cipria);
+    font-size:.9rem;font-weight:500;color:var(--bordeaux);white-space:nowrap;
+  }
+  .rating .stelle{color:var(--rosa);letter-spacing:1px}
+  .arco{
+    position:relative;justify-self:center;width:min(100%,360px);aspect-ratio:3/4;
+    border-radius:999px 999px var(--r-xl) var(--r-xl);overflow:hidden;background:var(--cipria);
+  }
+  .arco img{width:100%;height:100%;object-fit:cover}
+  .indirizzo-hero{margin-top:14px;font-size:.88rem;color:var(--testo-soft)}
+
+  /* Segnaposto foto */
+  .ph{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:16px;background:linear-gradient(160deg,#F7E2E2 0%,var(--cipria) 60%,#EEC9CF 100%);
+    color:var(--bordeaux);font-family:var(--mono);font-size:.8rem;
+  }
+
+  /* ---------- Listino scontrino ---------- */
+  .listino-head{text-align:center;margin-bottom:44px}
+  .listino-head .lead{margin-left:auto;margin-right:auto}
+  .scontrino-box{position:relative;max-width:420px;margin:0 auto;padding-top:14px}
+  .spillo{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:2;
+    width:26px;height:26px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#F6B8C6 0%,#E58AA0 35%,var(--rosa) 75%,#A93A55 100%);
+    box-shadow:0 3px 4px rgba(0,0,0,.25);
+  }
+  .scontrino{
+    --dente:12px;
+    position:relative;background:var(--crema);color:#2E1016;
+    font-family:var(--mono);font-size:.82rem;line-height:1.55;
+    padding:38px 22px calc(34px + var(--dente));
+    border-radius:6px 6px 0 0;
+    -webkit-mask:
+      linear-gradient(#000 0 0) top/100% calc(100% - var(--dente)) no-repeat,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/calc(var(--dente)*2) var(--dente) repeat-x;
+            mask:
+      linear-gradient(#000 0 0) top/100% calc(100% - var(--dente)) no-repeat,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/calc(var(--dente)*2) var(--dente) repeat-x;
+  }
+  .sc-centro{text-align:center}
+  .sc-titolo{font-weight:500;letter-spacing:.28em;font-size:.88rem;margin:0}
+  .sc-sub{margin:4px 0 0;color:#6B3A44}
+  .sc-sep{border:0;margin:14px 0;height:6px;
+    background:repeating-linear-gradient(90deg,#2E1016 0 6px,transparent 6px 10px) top/100% 1px no-repeat,
+               repeating-linear-gradient(90deg,#2E1016 0 6px,transparent 6px 10px) bottom/100% 1px no-repeat;
+    opacity:.55}
+  .sc-cat{margin:18px 0 8px;text-align:center;font-weight:500;letter-spacing:.2em;font-size:.9rem}
+  .sc-riga{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:6px;margin:12px 0}
+  .sc-riga .nome{flex:1 0 100%}
+  .sc-riga .punti{flex:1 1 auto;min-width:16px;border-bottom:1.5px dotted rgba(46,16,22,.5);transform:translateY(-4px)}
+  .sc-riga .prezzo{flex:0 0 auto;text-align:right}
+  .sc-nota{margin:18px 0 0;text-align:center;color:#6B3A44;font-size:.76rem}
+  .listino-cta{text-align:center;margin-top:36px}
+  .listino-cta .flat{border-color:var(--cipria);color:var(--crema)}
+  .listino-cta .flat:hover{background:var(--cipria);color:var(--bordeaux)}
+
+  /* ---------- Perché noi ---------- */
+  .punti-grid{display:grid;gap:14px;margin-top:36px}
+  .punto{
+    display:flex;gap:16px;align-items:flex-start;
+    padding:22px 24px;border-radius:var(--r-lg);background:#fff8f2;border:1px solid var(--linea);
+  }
+  .punto .n{
+    flex:none;width:44px;height:44px;border-radius:999px;display:grid;place-items:center;
+    background:var(--cipria);color:var(--bordeaux);font-family:var(--serif);font-style:italic;font-size:1.35rem;font-weight:600;
+  }
+  .punto h3{margin:0 0 4px;font-size:1.05rem;font-weight:600;color:var(--bordeaux)}
+  .punto p{margin:0;color:var(--testo-soft);font-size:.95rem}
+  .google{
+    margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:22px 26px;border-radius:999px;background:var(--bordeaux);color:var(--crema);
+  }
+  .google .voto{font-family:var(--serif);font-style:italic;font-size:2.6rem;line-height:1;font-weight:600}
+  .google .stelle{color:#F1BFC6;letter-spacing:2px;font-size:1rem}
+  .google .det{font-size:.92rem;color:#EBD3D3}
+
+  /* ---------- Galleria ---------- */
+  .galleria-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+  .slot{margin:0;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/5;background:var(--cipria)}
+  .slot:nth-child(1){grid-column:span 2;aspect-ratio:16/10;border-radius:999px 999px var(--r-lg) var(--r-lg)}
+  .slot:nth-child(6){grid-column:span 2;aspect-ratio:16/9;border-radius:var(--r-lg) var(--r-lg) 999px 999px}
+  .slot img{width:100%;height:100%;object-fit:cover}
+
+  /* ---------- Dove siamo ---------- */
+  .dove-card{
+    margin-top:32px;border-radius:var(--r-xl);background:var(--cipria);padding:28px 24px;
+    display:grid;gap:22px;
+  }
+  .info dt{font-size:.75rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--rosa);margin:0 0 4px}
+  .info dd{margin:0 0 18px;font-size:1.05rem;color:var(--bordeaux)}
+  .info dd:last-child{margin-bottom:0}
+  .info a{text-decoration-color:rgba(74,14,26,.35);text-underline-offset:3px}
+  .segnaposto{font-family:var(--mono);font-size:.9rem;background:rgba(255,255,255,.55);padding:2px 8px;border-radius:999px}
+  .dove-azioni{display:flex;flex-wrap:wrap;gap:10px}
+
+  /* ---------- CTA finale ---------- */
+  .finale{text-align:center;padding:88px 0}
+  .finale h2{font-size:clamp(2.8rem, 12vw, 4.8rem)}
+  .finale .lead{margin:18px auto 32px}
+
+  footer{padding:32px 0;font-size:.85rem;color:var(--testo-soft);text-align:center}
+  footer p{margin:4px 0}
+
+  /* ---------- WhatsApp flottante (mobile) ---------- */
+  .wa-float{
+    position:fixed;z-index:50;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom));
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    min-height:56px;border-radius:999px;text-decoration:none;
+    background:var(--bordeaux);color:var(--crema);font-weight:600;font-size:1rem;
+    border:1.5px solid rgba(251,243,234,.45);
+    transition:transform .2s ease, background .2s ease;
+  }
+  .wa-float:hover{background:#5d1424;transform:translateY(-2px)}
+  .wa-float svg{width:22px;height:22px}
+  .wa-float:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+
+  /* ---------- Reveal ---------- */
+  .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease}
+  .js .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .js .reveal{opacity:1;transform:none;transition:none}
+    .gel,.flat,.wa-float{transition:none}
+  }
+
+  /* ---------- Desktop ---------- */
+  @media (min-width: 900px){
+    :root{--gutter:40px}
+    body{padding-bottom:0}
+    .wa-float{display:none}
+    section{padding:110px 0}
+    .hero{padding:36px 0 110px}
+    .top{margin-bottom:64px}
+    .hero-grid{grid-template-columns:1.25fr 1fr;align-items:center;gap:56px}
+    .hero-cta{flex-direction:row;flex-wrap:wrap;align-items:center}
+    .punti-grid{grid-template-columns:repeat(3,1fr)}
+    .punto{flex-direction:column}
+    .galleria-grid{grid-template-columns:repeat(3,1fr)}
+    .slot:nth-child(1),.slot:nth-child(6){grid-column:auto;aspect-ratio:4/5}
+    .slot:nth-child(1){border-radius:999px 999px var(--r-lg) var(--r-lg)}
+    .slot:nth-child(6){border-radius:var(--r-lg) var(--r-lg) 999px 999px}
+    .dove-card{grid-template-columns:1.4fr 1fr;align-items:end;padding:44px}
+    .dove-azioni{justify-content:flex-end}
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. HERO -->
+<header class="hero crema">
+  <div class="wrap">
+    <div class="top">
+      <a class="marchio" href="#">Skin Beauty Lounge</a>
+      <a class="tel" href="tel:+393384276788">338 427 6788</a>
+    </div>
+
+    <div class="hero-grid">
+      <div class="reveal">
+        <p class="eyebrow">Centro estetico · Bra</p>
+        <h1><span>Skin Beauty</span><span class="l2">Lounge</span></h1>
+        <p class="lead">Un momento tutto per te, tra luci soffuse e trattamenti viso e corpo.</p>
+        <div class="hero-cta">
+          <a class="gel js-wa" href="https://wa.me/393384276788?text=Buongiorno%2C%20vorrei%20prenotare%20un%20trattamento" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.2Z"/></svg>
+            Prenota su WhatsApp
+          </a>
+          <span class="rating"><span class="stelle" aria-hidden="true">★★★★★</span> 5,0 su Google · 36 recensioni</span>
+        </div>
+        <p class="indirizzo-hero">Via Adua 1, 12042 Bra (CN)</p>
+      </div>
+
+      <div class="arco reveal">
+        <img data-src="foto/hero.jpg" alt="Ambiente interno di Skin Beauty Lounge">
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- 2. TRATTAMENTI -->
+<section class="bordeaux" id="trattamenti">
+  <div class="wrap">
+    <div class="listino-head reveal">
+      <p class="eyebrow">Trattamenti</p>
+      <h2>Il listino</h2>
+      <p class="lead">Viso e corpo. Il dettaglio dei trattamenti e dei prezzi è da confermare con il centro.</p>
+    </div>
+
+    <div class="scontrino-box reveal">
+      <span class="spillo" aria-hidden="true"></span>
+      <div class="scontrino">
+        <div class="sc-centro">
+          <p class="sc-titolo">SKIN BEAUTY LOUNGE</p>
+          <p class="sc-sub">Via Adua 1 · Bra (CN)</p>
+        </div>
+        <hr class="sc-sep">
+        <p class="sc-cat">VISO</p>
+        <hr class="sc-sep">
+        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+
+        <hr class="sc-sep">
+        <p class="sc-cat">CORPO</p>
+        <hr class="sc-sep">
+        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+
+        <hr class="sc-sep">
+        <p class="sc-nota">Per informazioni e prenotazioni<br>WhatsApp 338 427 6788</p>
+      </div>
+    </div>
+
+    <div class="listino-cta reveal">
+      <a class="flat js-wa" href="https://wa.me/393384276788?text=Buongiorno%2C%20vorrei%20prenotare%20un%20trattamento" target="_blank" rel="noopener">Chiedi informazioni</a>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PERCHÉ SCEGLIERE NOI -->
+<section class="crema" id="perche">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Perché scegliere noi</p>
+      <h2>Prendersi cura,<br>con calma</h2>
+    </div>
+
+    <div class="punti-grid">
+      <div class="punto reveal">
+        <span class="n">1</span>
+        <div><h3>Cura</h3><p>Attenzione alla persona e ascolto, dall'accoglienza alla fine del trattamento.</p></div>
+      </div>
+      <div class="punto reveal">
+        <span class="n">2</span>
+        <div><h3>Ambiente</h3><p>Uno spazio raccolto, con luci soffuse rosa e viola, pensato per rilassarsi.</p></div>
+      </div>
+      <div class="punto reveal">
+        <span class="n">3</span>
+        <div><h3>Prodotti</h3><p>Prodotti scelti con attenzione per i trattamenti viso e corpo.</p></div>
+      </div>
+    </div>
+
+    <div class="google reveal">
+      <div>
+        <div class="voto">5,0</div>
+        <div class="stelle" aria-hidden="true">★★★★★</div>
+      </div>
+      <div class="det">Valutazione su Google<br>36 recensioni</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. GALLERIA -->
+<section class="bordeaux" id="galleria">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Galleria</p>
+      <h2>Il centro</h2>
+    </div>
+    <div class="galleria-grid">
+      <figure class="slot reveal"><img data-src="foto/foto-1.jpg" alt="Skin Beauty Lounge, foto 1"></figure>
+      <figure class="slot reveal"><img data-src="foto/foto-2.jpg" alt="Skin Beauty Lounge, foto 2"></figure>
+      <figure class="slot reveal"><img data-src="foto/foto-3.jpg" alt="Skin Beauty Lounge, foto 3"></figure>
+      <figure class="slot reveal"><img data-src="foto/foto-4.jpg" alt="Skin Beauty Lounge, foto 4"></figure>
+      <figure class="slot reveal"><img data-src="foto/foto-5.jpg" alt="Skin Beauty Lounge, foto 5"></figure>
+      <figure class="slot reveal"><img data-src="foto/foto-6.jpg" alt="Skin Beauty Lounge, foto 6"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 5. DOVE SIAMO -->
+<section class="crema" id="dove">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Dove siamo</p>
+      <h2>Ti aspettiamo a Bra</h2>
+    </div>
+    <div class="dove-card reveal">
+      <dl class="info">
+        <dt>Indirizzo</dt>
+        <dd>Via Adua 1, 12042 Bra (CN)</dd>
+        <dt>Orari</dt>
+        <dd><span class="segnaposto">[orari da confermare]</span></dd>
+        <dt>Telefono e WhatsApp</dt>
+        <dd><a href="tel:+393384276788">338 427 6788</a></dd>
+      </dl>
+      <div class="dove-azioni">
+        <a class="flat" href="https://www.google.com/maps/search/?api=1&amp;query=Skin%20Beauty%20Lounge%20Via%20Adua%201%20Bra" target="_blank" rel="noopener">Apri in Google Maps</a>
+        <a class="flat" href="tel:+393384276788">Chiama</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CTA FINALE -->
+<section class="bordeaux finale" id="prenota">
+  <div class="wrap reveal">
+    <p class="eyebrow">Prenota</p>
+    <h2>Il tuo momento<br>ti aspetta</h2>
+    <p class="lead">Scrivici su WhatsApp: ti rispondiamo per trovare insieme giorno e orario.</p>
+    <a class="gel gel--chiaro js-wa" href="https://wa.me/393384276788?text=Buongiorno%2C%20vorrei%20prenotare%20un%20trattamento" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.2Z"/></svg>
+      Prenota su WhatsApp
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer class="crema">
+  <div class="wrap">
+    <p><strong>Skin Beauty Lounge</strong> · Via Adua 1, 12042 Bra (CN)</p>
+    <p>Tel. e WhatsApp <a href="tel:+393384276788">338 427 6788</a></p>
+  </div>
+</footer>
+
+<a class="wa-float js-wa" href="https://wa.me/393384276788?text=Buongiorno%2C%20vorrei%20prenotare%20un%20trattamento" target="_blank" rel="noopener" aria-label="Prenota su WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.2Z"/></svg>
+  Prenota su WhatsApp
+</a>
+
+<script>
+  document.documentElement.classList.add('js');
+
+  // Foto: carica da foto/; se il file manca, mostra il segnaposto.
+  document.querySelectorAll('img[data-src]').forEach(function (img) {
+    var box = img.parentNode;
+    function segnaposto() {
+      var ph = document.createElement('div');
+      ph.className = 'ph';
+      ph.setAttribute('role', 'img');
+      ph.setAttribute('aria-label', 'Foto da sostituire');
+      ph.textContent = '[foto da sostituire]';
+      box.replaceChild(ph, img);
+    }
+    img.addEventListener('error', segnaposto, { once: true });
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.src = img.getAttribute('data-src');
+  });
+
+  // Reveal leggero allo scroll
+  var items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.01 });
+    items.forEach(function (el) { io.observe(el); });
+  } else {
+    items.forEach(function (el) { el.classList.add('in'); });
+  }
+</script>
+</body>
+</html>
