@@ -51,35 +51,41 @@
   .lead{font-size:1.0625rem;color:var(--testo-soft);max-width:34ch;margin:16px 0 0}
   .bordeaux .lead{color:#EBD3D3}
 
-  /* ---------- Pulsanti lucidi a pillola ---------- */
+  /* ---------- Pulsanti "matita pastello" ---------- */
   .gel{
+    --fill:#F7CBD5; --tratto:rgba(196,80,108,.30); --linea-m:var(--bordeaux);
+    --grana:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .97 0 0 0 0 .93 0 0 0 -3 1.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     position:relative;isolation:isolate;
     display:inline-flex;align-items:center;justify-content:center;gap:10px;
-    min-height:58px;padding:16px 34px;border:0;border-radius:999px;
+    min-height:60px;padding:16px 36px;border:0;border-radius:999px;background:none;
     font-family:var(--sans);font-weight:600;font-size:1.125rem;letter-spacing:.01em;
-    color:#fff;white-space:nowrap;text-decoration:none;text-shadow:0 1px 1px rgba(74,14,26,.35);
-    background:linear-gradient(180deg,#E58AA0 0%,#C4506C 55%,#A93A55 100%);
-    box-shadow:inset 0 2px 3px rgba(255,255,255,.55), inset 0 -3px 6px rgba(74,14,26,.35), 0 8px 18px rgba(169,58,85,.35);
-    transition:transform .2s ease, filter .2s ease;
+    color:var(--bordeaux);white-space:nowrap;text-decoration:none;
+    transition:transform .2s ease;
     -webkit-tap-highlight-color:transparent;
   }
+  /* riempimento a pastello (colore + tratteggio + grana della carta) e contorno tracciato a mano */
+  .gel::before,.gel::after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:999px;filter:url(#matita)}
   .gel::before{
-    content:"";position:absolute;z-index:-1;pointer-events:none;
-    top:3px;left:8%;right:8%;height:46%;
-    border-radius:999px 999px 40px 40px / 999px 999px 18px 18px;
-    background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 100%);
+    inset:0;
+    background:
+      var(--grana),
+      repeating-linear-gradient(-62deg,var(--tratto) 0 1.5px,transparent 1.5px 4.5px),
+      var(--fill);
+    border:2px solid var(--linea-m);
+  }
+  /* secondo passaggio di matita, leggermente storto */
+  .gel::after{
+    inset:-3px 3px -1px -4px;
+    border:1.5px solid var(--linea-m);opacity:.45;
+    transform:rotate(-1.2deg);
   }
   .gel svg{width:22px;height:22px;flex:none}
-  .gel:hover{transform:translateY(-2px);filter:brightness(1.06)}
-  .gel:active{transform:translateY(1px);filter:brightness(1)}
-  .gel:focus-visible{outline:3px solid var(--bordeaux);outline-offset:4px}
+  .gel:hover{transform:translateY(-2px) rotate(-1deg)}
+  .gel:active{transform:translateY(1px)}
+  .gel:focus-visible{outline:3px dashed var(--bordeaux);outline-offset:6px}
 
-  .gel--chiaro{
-    color:var(--bordeaux);text-shadow:0 1px 0 rgba(255,255,255,.6);
-    background:linear-gradient(180deg,#FBE3E3 0%,#F1BFC6 100%);
-    box-shadow:inset 0 2px 3px rgba(255,255,255,.75), inset 0 -3px 6px rgba(169,58,85,.28), 0 8px 18px rgba(0,0,0,.25);
-  }
-  .gel--chiaro::before{background:linear-gradient(180deg,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 100%)}
+  .gel--chiaro{--fill:#FBF3EA;--tratto:rgba(241,191,198,.75);--linea-m:#F1BFC6}
+  .gel--chiaro::after{border-color:var(--crema)}
   .gel--chiaro:focus-visible{outline-color:var(--crema)}
 
   /* Pulsanti piatti */
@@ -255,6 +261,7 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="matita" x="-5%" y="-20%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 
 <!-- 1. HERO -->
 <header class="hero crema">
