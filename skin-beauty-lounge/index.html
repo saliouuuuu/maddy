@@ -465,7 +465,7 @@
     <div class="listino-head reveal">
       <p class="eyebrow">Trattamenti</p>
       <h2>Il listino</h2>
-      <p class="lead">Viso e corpo. Il dettaglio dei trattamenti e dei prezzi è da confermare con il centro.</p>
+      <p class="lead">Viso e corpo. Scrivici su WhatsApp e ti mandiamo trattamenti e prezzi aggiornati.</p>
     </div>
 
     <div class="scontrino-box reveal">
@@ -478,24 +478,20 @@
         <hr class="sc-sep">
         <p class="sc-cat">VISO</p>
         <hr class="sc-sep">
-        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
-        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
-        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+        <div class="sc-riga"><span class="nome">Trattamenti viso</span><span class="punti"></span><span class="prezzo">chiedi su WhatsApp</span></div>
 
         <hr class="sc-sep">
         <p class="sc-cat">CORPO</p>
         <hr class="sc-sep">
-        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
-        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
-        <div class="sc-riga"><span class="nome">[trattamento da confermare]</span><span class="punti"></span><span class="prezzo">[prezzo da confermare]</span></div>
+        <div class="sc-riga"><span class="nome">Trattamenti corpo</span><span class="punti"></span><span class="prezzo">chiedi su WhatsApp</span></div>
 
         <hr class="sc-sep">
-        <p class="sc-nota">Per informazioni e prenotazioni<br>WhatsApp 338 427 6788</p>
+        <p class="sc-nota">Listino e prenotazioni<br>WhatsApp 338 427 6788</p>
       </div>
     </div>
 
     <div class="listino-cta reveal">
-      <a class="flat js-wa" href="https://wa.me/393384276788?text=Buongiorno%2C%20vorrei%20prenotare%20un%20trattamento" target="_blank" rel="noopener">Chiedi informazioni</a>
+      <a class="flat js-wa" href="https://wa.me/393384276788?text=Buongiorno%2C%20vorrei%20prenotare%20un%20trattamento" target="_blank" rel="noopener">Chiedi il listino</a>
     </div>
   </div>
 </section>
@@ -534,7 +530,7 @@
 </section>
 
 <!-- 4. GALLERIA -->
-<section class="bordeaux" id="galleria">
+<section class="bordeaux" id="galleria" hidden>
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">Galleria</p>
@@ -563,7 +559,7 @@
         <dt>Indirizzo</dt>
         <dd>Via Adua 1, 12042 Bra (CN)</dd>
         <dt>Orari</dt>
-        <dd><span class="segnaposto">[orari da confermare]</span></dd>
+        <dd><a href="https://www.google.com/maps/search/?api=1&amp;query=Skin%20Beauty%20Lounge%20Via%20Adua%201%20Bra" target="_blank" rel="noopener">Vedi gli orari aggiornati su Google</a></dd>
         <dt>Telefono e WhatsApp</dt>
         <dd><a href="tel:+393384276788">338 427 6788</a></dd>
       </dl>
@@ -687,6 +683,23 @@
       if (visibile && !era) requestAnimationFrame(giro);
     }).observe(hero);
     requestAnimationFrame(giro);
+  })();
+
+
+  // Galleria: mostra solo le foto che esistono; se sono meno di 3 la sezione resta nascosta
+  (function () {
+    var sez = document.getElementById('galleria');
+    if (!sez) return;
+    var figs = [].slice.call(sez.querySelectorAll('figure.slot')), ok = 0, fatte = 0;
+    figs.forEach(function (fig) {
+      var img = fig.querySelector('img'), src = img.getAttribute('data-src');
+      img.removeAttribute('data-src');
+      var t = new Image();
+      t.onload = function () { img.src = src; ok++; fine(); };
+      t.onerror = function () { fig.remove(); fine(); };
+      t.src = src;
+    });
+    function fine() { if (++fatte === figs.length && ok >= 3) sez.hidden = false; else if (fatte === figs.length) sez.remove(); }
   })();
 
   // Foto: carica da foto/; se il file manca, mostra il segnaposto.
