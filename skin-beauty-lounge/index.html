@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#FBF3EA">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,500;1,600&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
   :root{
     --cipria:#F4D9D9;
@@ -100,28 +100,132 @@
   .flat:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
 
   /* ---------- Hero ---------- */
-  .hero{padding:28px 0 64px;position:relative;overflow:hidden}
-  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:40px}
-  .marchio{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.35rem;line-height:1;text-decoration:none}
+  @property --r{syntax:"<length>";inherits:false;initial-value:0px}
+  .hero{position:relative;overflow:hidden;isolation:isolate;padding:20px 0 0;background:var(--crema)}
+  .luce{position:absolute;inset:0;width:100%;height:100%;z-index:-2;display:block;pointer-events:none}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .29 0 0 0 0 .05 0 0 0 0 .1 0 0 0 -2.4 1.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.18'/%3E%3C/svg%3E");
+  }
+  /* penombra iniziale: la luce si accende dall'arco */
+  .buio{position:absolute;inset:0;z-index:6;pointer-events:none;display:none;background:#2B0810}
+  .js .buio{display:block}
+  .avvia .buio{
+    --r:0px;
+    -webkit-mask:radial-gradient(circle at 50% 72%, transparent var(--r), #000 calc(var(--r) + 38vmax));
+            mask:radial-gradient(circle at 50% 72%, transparent var(--r), #000 calc(var(--r) + 38vmax));
+    animation:accendi 1.35s .12s cubic-bezier(.65,0,.25,1) forwards;
+  }
+  @keyframes accendi{0%{--r:0px;opacity:1}70%{opacity:1}100%{--r:140vmax;opacity:0;visibility:hidden}}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}
+  .marchio{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.35rem;line-height:1;text-decoration:none;color:var(--bordeaux)}
   .top a.tel{font-size:.9rem;font-weight:500;text-decoration:none;color:var(--testo-soft);white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
-  .hero-grid{display:grid;gap:40px}
-  .hero h1{font-size:clamp(3.6rem, 17vw, 7rem);color:var(--bordeaux)}
-  .hero h1 span{display:block}
-  .hero h1 .l2{padding-left:.55em}
-  .hero .lead{margin-top:22px}
-  .hero-cta{margin-top:30px;display:flex;flex-direction:column;align-items:flex-start;gap:18px}
-  .rating{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:8px 16px;border-radius:999px;background:var(--cipria);
-    font-size:.9rem;font-weight:500;color:var(--bordeaux);white-space:nowrap;
-  }
-  .rating .stelle{color:var(--rosa);letter-spacing:1px}
+  .hero-grid{display:grid;gap:44px}
+  .hero .eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:10px}
+  .hero .eyebrow::before{content:"";width:28px;height:1.5px;background:currentColor;border-radius:2px}
+
+  .titolo{color:var(--bordeaux);font-style:normal;margin:0}
+  .h-riga{display:block;clip-path:inset(-30% -12% 0 -12%);padding-bottom:.06em}
+  .r1{font-weight:300;font-size:clamp(3rem, 14vw, 5.6rem);line-height:.95;letter-spacing:-.02em}
+  .r2{position:relative;font-style:italic;font-weight:500;font-size:clamp(4.7rem, 24vw, 9.6rem);line-height:.86;letter-spacing:-.025em;padding-left:.32em;padding-bottom:.2em;clip-path:inset(-30% -12% 0 -12%)}
+  .ch{display:inline-block}
+  .svolazzo{position:absolute;left:.3em;bottom:.02em;width:3.2em;height:.42em;overflow:visible;pointer-events:none}
+  .svolazzo path{fill:none;stroke:var(--rosa);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;filter:url(#matita)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  .hero .lead{margin-top:14px;max-width:30ch}
+  .hero-cta{margin-top:26px;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-nota{font-size:.88rem;color:var(--testo-soft);margin:0}
+  .hero-nota b{color:var(--bordeaux);font-weight:600}
+
+  /* palco con l'arco e i dettagli */
+  .palco{position:relative;width:100%;max-width:440px;justify-self:center;padding:6% 0 8%}
+  .strato{will-change:transform}
+  .strato--deco{position:absolute;inset:0;pointer-events:none}
   .arco{
-    position:relative;justify-self:center;width:min(100%,360px);aspect-ratio:3/4;
+    position:relative;width:76%;margin:0 auto;aspect-ratio:3/4;
     border-radius:999px 999px var(--r-xl) var(--r-xl);overflow:hidden;background:var(--cipria);
+    transform:translateZ(0);
   }
-  .arco img{width:100%;height:100%;object-fit:cover}
-  .indirizzo-hero{margin-top:14px;font-size:.88rem;color:var(--testo-soft)}
+  .arco img{width:100%;height:100%;object-fit:cover;transform-origin:50% 70%}
+  .lampada{
+    position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.45;
+    background:radial-gradient(70% 55% at 50% 28%, rgba(196,140,236,.75), rgba(229,138,160,.25) 55%, transparent 75%);
+  }
+  .arco-bordo{position:absolute;left:calc(12% - 9px);top:calc(6% - 9px);width:calc(76% + 18px);aspect-ratio:3/4;overflow:visible;pointer-events:none}
+  .arco-bordo path{fill:none;stroke:var(--bordeaux);stroke-width:1.6;opacity:.55;filter:url(#matita)}
+
+  .badge{position:absolute;right:0;top:2%;width:31%;aspect-ratio:1;pointer-events:auto}
+  .badge svg{width:100%;height:100%;display:block;overflow:visible}
+  .badge .giro{transform-box:fill-box;transform-origin:center}
+  .badge-centro{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:var(--bordeaux)}
+  .badge-centro b{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(1.5rem, 7.4vw, 2.1rem);line-height:.9}
+  .badge-centro i{font-style:normal;color:var(--rosa);font-size:.78rem;letter-spacing:2px}
+
+  .polaroid{
+    position:absolute;left:0;bottom:4%;width:34%;margin:0;padding:6px 6px 0;background:#FFFBF6;
+    border-radius:14px;transform:rotate(-7deg);box-shadow:0 10px 24px rgba(74,14,26,.14);
+  }
+  .polaroid > img,.polaroid > .ph{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:9px;display:block}
+  .polaroid > .ph{font-size:.6rem;padding:6px}
+  .polaroid figcaption{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--bordeaux);text-align:center;padding:4px 0 6px}
+
+  .pil{
+    position:absolute;display:inline-flex;align-items:center;gap:6px;isolation:isolate;
+    padding:7px 14px;font-size:.8rem;font-weight:600;color:var(--bordeaux);white-space:nowrap;
+  }
+  .pil::before{
+    content:"";position:absolute;inset:0;z-index:-1;border-radius:999px;filter:url(#matita);
+    border:1.5px solid var(--bordeaux);
+    background:repeating-linear-gradient(-62deg,rgba(196,80,108,.22) 0 1.5px,transparent 1.5px 4.5px),#FBE3E3;
+  }
+  .pil i{width:7px;height:7px;border-radius:50%;background:var(--rosa)}
+  .p1{left:2%;top:30%}
+  .p2{right:0;top:56%}
+  .p3{right:6%;bottom:1%}
+  .stella{position:absolute;width:22px;height:22px;overflow:visible}
+  .stella path{fill:none;stroke:var(--rosa);stroke-width:1.8;stroke-linecap:round;filter:url(#matita)}
+  .s1{left:8%;top:6%}
+  .s2{right:30%;top:-1%;width:14px;height:14px}
+  .s3{left:31%;bottom:9%;width:16px;height:16px}
+
+  /* nastro */
+  .nastro{margin-top:52px;margin-left:-6%;width:112%;transform:rotate(-2.2deg);background:var(--cipria);border-block:1.5px solid rgba(74,14,26,.18);overflow:hidden;position:relative;z-index:2;margin-bottom:-10px}
+  .nastro-in{display:flex;width:max-content;align-items:center;gap:22px;padding:12px 0;font-family:var(--serif);font-size:1.6rem;color:var(--bordeaux);white-space:nowrap}
+  .nastro-in em{font-style:italic}
+  .nastro-in b{font-family:var(--sans);font-size:.9rem;color:var(--rosa);font-weight:400}
+
+  /* ---- sequenza di apertura ---- */
+  .js .ch,.js .hero-anim,.js .arco,.js .badge,.js .polaroid,.js .pil,.js .stella{opacity:0}
+  .avvia .ch{animation:sale 1.15s cubic-bezier(.2,.85,.25,1) both;animation-delay:calc(.5s + var(--i) * 48ms)}
+  @keyframes sale{from{opacity:0;transform:translateY(108%) rotate(8deg);filter:blur(6px)}55%{opacity:1}to{opacity:1;transform:none;filter:blur(0)}}
+  .js .svolazzo path{stroke-dasharray:420;stroke-dashoffset:420}
+  .avvia .svolazzo path{animation:traccia 1s 1.35s cubic-bezier(.6,0,.3,1) forwards}
+  @keyframes traccia{to{stroke-dashoffset:0}}
+  .avvia .hero-anim{animation:su .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(1s + var(--d,0) * 110ms)}
+  @keyframes su{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+  .avvia .arco{animation:apri 1.5s .25s cubic-bezier(.75,0,.2,1) both}
+  @keyframes apri{from{opacity:1;clip-path:inset(100% 0 0 0 round 999px 999px 40px 40px)}to{opacity:1;clip-path:inset(0 0 0 0 round 999px 999px 40px 40px)}}
+  .avvia .arco img{animation:zoom 2.6s .25s cubic-bezier(.15,.7,.2,1) both}
+  @keyframes zoom{from{transform:scale(1.4)}to{transform:scale(1)}}
+  .avvia .lampada{animation:lampada 1.4s 1.1s ease-out both, respira 7s 2.5s ease-in-out infinite alternate}
+  @keyframes lampada{0%{opacity:0}18%{opacity:.85}30%{opacity:.25}48%{opacity:.75}62%{opacity:.4}100%{opacity:.45}}
+  @keyframes respira{from{opacity:.45}to{opacity:.75}}
+  .js .arco-bordo path{stroke-dasharray:1600;stroke-dashoffset:1600}
+  .avvia .arco-bordo path{animation:traccia 2s 1.2s cubic-bezier(.5,0,.3,1) forwards}
+  .avvia .badge{animation:pop 1.1s 1.45s cubic-bezier(.3,1.5,.5,1) both}
+  .avvia .badge .giro{animation:gira 26s 1.4s linear infinite}
+  @keyframes gira{to{transform:rotate(360deg)}}
+  @keyframes pop{from{opacity:0;transform:scale(.4) rotate(-40deg)}to{opacity:1;transform:none}}
+  .avvia .polaroid{animation:cade 1.2s 1.6s cubic-bezier(.3,1.35,.5,1) both}
+  @keyframes cade{from{opacity:0;transform:translateY(40px) rotate(-22deg) scale(.8)}to{opacity:1;transform:rotate(-7deg)}}
+  .avvia .pil{animation:pop2 .9s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(1.75s + var(--d,0) * 140ms)}
+  @keyframes pop2{from{opacity:0;transform:translateY(16px) scale(.6)}to{opacity:1;transform:none}}
+  .avvia .stella{animation:brilla 3.2s ease-in-out infinite both;animation-delay:calc(2s + var(--d,0) * .9s)}
+  @keyframes brilla{0%,100%{opacity:.15;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(25deg)}}
+  .nastro-in{animation:nastro 32s linear infinite}
+  @keyframes nastro{to{transform:translateX(-50%)}}
 
   /* Segnaposto foto */
   .ph{
@@ -226,7 +330,9 @@
     border:1.5px solid rgba(251,243,234,.45);
     transition:transform .2s ease, background .2s ease;
   }
-  .wa-float:hover{background:#5d1424;transform:translateY(-2px)}
+  .js .wa-float{transform:translateY(160%);opacity:0;transition:transform .45s cubic-bezier(.2,.8,.2,1), opacity .3s ease, background .2s ease}
+  .js .wa-float.su{transform:none;opacity:1}
+  .wa-float:hover{background:#5d1424}
   .wa-float svg{width:22px;height:22px}
   .wa-float:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
 
@@ -237,6 +343,11 @@
     html{scroll-behavior:auto}
     .js .reveal{opacity:1;transform:none;transition:none}
     .gel,.flat,.wa-float{transition:none}
+    .js .ch,.js .hero-anim,.js .arco,.js .badge,.js .polaroid,.js .pil,.js .stella,.arco img,.lampada,.badge .giro,.nastro-in{
+      animation:none!important;opacity:1!important;filter:none!important;clip-path:none!important}
+    .js .ch,.js .hero-anim,.arco img{transform:none!important}
+    .js .svolazzo path,.js .arco-bordo path{animation:none!important;stroke-dashoffset:0!important}
+    .js .buio{display:none}
   }
 
   /* ---------- Desktop ---------- */
@@ -245,10 +356,13 @@
     body{padding-bottom:0}
     .wa-float{display:none}
     section{padding:110px 0}
-    .hero{padding:36px 0 110px}
-    .top{margin-bottom:64px}
-    .hero-grid{grid-template-columns:1.25fr 1fr;align-items:center;gap:56px}
-    .hero-cta{flex-direction:row;flex-wrap:wrap;align-items:center}
+    .hero{padding:32px 0 0}
+    .top{margin-bottom:40px}
+    .hero-grid{grid-template-columns:1.15fr 1fr;align-items:center;gap:40px}
+    .hero-cta{flex-direction:row;flex-wrap:wrap;align-items:center;gap:22px}
+    .palco{max-width:500px}
+    .nastro{margin-top:72px}
+    .nastro-in{font-size:2rem;padding:16px 0}
     .punti-grid{grid-template-columns:repeat(3,1fr)}
     .punto{flex-direction:column}
     .galleria-grid{grid-template-columns:repeat(3,1fr)}
@@ -259,36 +373,86 @@
     .dove-azioni{justify-content:flex-end}
   }
 </style>
+<script>
+  document.documentElement.classList.add('js');
+  // rete di sicurezza: se qualcosa va storto, la hero si mostra comunque
+  setTimeout(function () { document.documentElement.classList.add('avvia'); }, 2200);
+</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="matita" x="-5%" y="-20%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 
 <!-- 1. HERO -->
 <header class="hero crema">
+  <canvas class="luce" aria-hidden="true"></canvas>
+  <div class="buio" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="top">
+    <div class="top hero-anim" style="--d:-6">
       <a class="marchio" href="#">Skin Beauty Lounge</a>
       <a class="tel" href="tel:+393384276788">338 427 6788</a>
     </div>
 
     <div class="hero-grid">
-      <div class="reveal">
-        <p class="eyebrow">Centro estetico · Bra</p>
-        <h1><span>Skin Beauty</span><span class="l2">Lounge</span></h1>
-        <p class="lead">Un momento tutto per te, tra luci soffuse e trattamenti viso e corpo.</p>
-        <div class="hero-cta">
+      <div>
+        <p class="eyebrow hero-anim" style="--d:-4">Centro estetico · Bra</p>
+        <h1 class="titolo">
+          <span class="sr">Skin Beauty Lounge, centro estetico a Bra</span>
+          <span class="h-riga r1" aria-hidden="true" data-split>Skin Beauty</span>
+          <span class="h-riga r2" aria-hidden="true"><span data-split>Lounge</span><svg class="svolazzo" viewBox="0 0 300 40" preserveAspectRatio="none"><path d="M4 30 C 52 10, 96 38, 150 24 S 246 4, 296 16"/></svg></span>
+        </h1>
+        <p class="lead hero-anim" style="--d:0">Un momento tutto per te, tra luci soffuse e trattamenti viso e corpo.</p>
+        <div class="hero-cta hero-anim" style="--d:1">
           <a class="gel js-wa" href="https://wa.me/393384276788?text=Buongiorno%2C%20vorrei%20prenotare%20un%20trattamento" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.2Z"/></svg>
             Prenota su WhatsApp
           </a>
-          <span class="rating"><span class="stelle" aria-hidden="true">★★★★★</span> 5,0 su Google · 36 recensioni</span>
+          <p class="hero-nota"><b>5,0 ★ su Google</b> · 36 recensioni</p>
         </div>
-        <p class="indirizzo-hero">Via Adua 1, 12042 Bra (CN)</p>
       </div>
 
-      <div class="arco reveal">
-        <img data-src="foto/hero.jpg" alt="Cabina di Skin Beauty Lounge con lettino e luce rosa e viola">
+      <div class="palco" data-palco>
+        <div class="strato" data-prof="10">
+          <div class="arco">
+            <img data-src="foto/hero.jpg" data-eager alt="Cabina di Skin Beauty Lounge con lettino e luce rosa e viola">
+            <span class="lampada" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="strato strato--deco" data-prof="4" aria-hidden="true">
+          <svg class="arco-bordo" viewBox="0 0 300 400" preserveAspectRatio="none"><path d="M8 392 L6 150 C 6 62, 70 6, 150 5 C 232 4, 294 64, 294 152 L 293 393 Z"/></svg>
+          <svg class="stella s1" viewBox="0 0 24 24" style="--d:0"><path d="M12 2 C 12.6 9, 15 11.4, 22 12 C 15 12.6, 12.6 15, 12 22 C 11.4 15, 9 12.6, 2 12 C 9 11.4, 11.4 9, 12 2 Z"/></svg>
+          <svg class="stella s2" viewBox="0 0 24 24" style="--d:1"><path d="M12 2 C 12.6 9, 15 11.4, 22 12 C 15 12.6, 12.6 15, 12 22 C 11.4 15, 9 12.6, 2 12 C 9 11.4, 11.4 9, 12 2 Z"/></svg>
+          <svg class="stella s3" viewBox="0 0 24 24" style="--d:2"><path d="M12 2 C 12.6 9, 15 11.4, 22 12 C 15 12.6, 12.6 15, 12 22 C 11.4 15, 9 12.6, 2 12 C 9 11.4, 11.4 9, 12 2 Z"/></svg>
+        </div>
+        <div class="strato strato--deco" data-prof="22" aria-hidden="true">
+          <span class="pil p1" style="--d:0"><i></i>Viso</span>
+          <span class="pil p2" style="--d:1"><i></i>Corpo</span>
+          <span class="pil p3" style="--d:2"><i></i>Via Adua 1 · Bra</span>
+        </div>
+        <div class="strato strato--deco" data-prof="34">
+          <figure class="polaroid">
+            <img data-src="foto/foto-2.jpg" alt="Crema rosa tonificante applicata sulla gamba">
+            <figcaption>tonificante</figcaption>
+          </figure>
+        </div>
+        <div class="strato strato--deco" data-prof="28" aria-hidden="true">
+          <div class="badge">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="57" fill="#FBF3EA" stroke="#4A0E1A" stroke-width="1.4" style="filter:url(#matita)"/>
+              <circle cx="60" cy="60" r="31" fill="none" stroke="#C4506C" stroke-width="1" stroke-dasharray="2 4"/>
+              <defs><path id="giroPath" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"/></defs>
+              <g class="giro"><text font-family="DM Mono, monospace" font-size="9.6" fill="#4A0E1A" letter-spacing="1.2"><textPath href="#giroPath" textLength="272" lengthAdjust="spacing">5,0 SU GOOGLE · 36 RECENSIONI · BRA ·</textPath></text></g>
+            </svg>
+            <div class="badge-centro"><b>5,0</b><i>★★★★★</i></div>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <div class="nastro" aria-hidden="true">
+    <div class="nastro-in">
+      <span>Viso</span><b>✦</b><span><em>Corpo</em></span><b>✦</b><span>Skin Beauty <em>Lounge</em></span><b>✦</b><span><em>Bra</em></span><b>✦</b><span>Via Adua 1</span><b>✦</b>
+      <span>Viso</span><b>✦</b><span><em>Corpo</em></span><b>✦</b><span>Skin Beauty <em>Lounge</em></span><b>✦</b><span><em>Bra</em></span><b>✦</b><span>Via Adua 1</span><b>✦</b>
     </div>
   </div>
 </header>
@@ -439,7 +603,91 @@
 </a>
 
 <script>
-  document.documentElement.classList.add('js');
+  var root = document.documentElement;
+  var fermo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Titolo: una lettera alla volta
+  (function () {
+    var n = 0;
+    document.querySelectorAll('[data-split]').forEach(function (el) {
+      var t = el.textContent; el.textContent = '';
+      for (var k = 0; k < t.length; k++) {
+        if (t[k] === ' ') { el.appendChild(document.createTextNode(' ')); continue; }
+        var s = document.createElement('span');
+        s.className = 'ch'; s.textContent = t[k]; s.style.setProperty('--i', n++);
+        el.appendChild(s);
+      }
+    });
+  })();
+
+  // Avvio della sequenza quando i font sono pronti (al massimo dopo 700 ms)
+  (function () {
+    function avvia() { requestAnimationFrame(function () { root.classList.add('avvia'); }); }
+    if (document.fonts && document.fonts.ready) {
+      Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 700); })]).then(avvia);
+    } else { avvia(); }
+  })();
+
+  // Pulsante flottante: compare quando il pulsante della hero esce dallo schermo
+  (function () {
+    var f = document.querySelector('.wa-float'), cta = document.querySelector('.hero .gel');
+    if (!f || !cta || !('IntersectionObserver' in window)) { if (f) f.classList.add('su'); return; }
+    new IntersectionObserver(function (es) { f.classList.toggle('su', !es[0].isIntersecting); }).observe(cta);
+  })();
+
+  // Luce soffusa animata dietro la hero + profondità degli strati
+  (function () {
+    var hero = document.querySelector('.hero'), c = document.querySelector('.luce');
+    if (!hero || !c || fermo) return;
+    var ctx = c.getContext('2d'), scala = 0.3, W = 2, H = 2, visibile = true;
+    var strati = [].slice.call(document.querySelectorAll('[data-prof]'));
+    var mx = 0, my = 0, cx = 0, cy = 0;
+    var piccolo = innerWidth < 700;
+    var luci = [
+      { c: '241,191,198', r: .62, sx: .00019, sy: .00015, f: 0,   a: .75, x: .78, y: .62 },
+      { c: '201,162,224', r: .50, sx: .00014, sy: .00021, f: 1.9, a: .55, x: .70, y: .78 },
+      { c: '229,138,160', r: .40, sx: .00022, sy: .00013, f: 3.4, a: .35, x: .30, y: .30 },
+      { c: '251,227,227', r: .55, sx: .00012, sy: .00018, f: 4.8, a: .8,  x: .20, y: .70 }
+    ];
+    function misura() {
+      W = c.width = Math.max(2, Math.round(c.clientWidth * scala));
+      H = c.height = Math.max(2, Math.round(c.clientHeight * scala));
+    }
+    function disegna(t) {
+      ctx.fillStyle = '#FBF3EA'; ctx.fillRect(0, 0, W, H);
+      var m = Math.max(W, H);
+      for (var i = 0; i < luci.length; i++) {
+        var b = luci[i];
+        var x = W * (b.x + .16 * Math.sin(t * b.sx + b.f)) + cx * W * .12 * (i % 2 ? 1 : -1);
+        var y = H * (b.y + .12 * Math.cos(t * b.sy + b.f)) + cy * H * .12;
+        var g = ctx.createRadialGradient(x, y, 0, x, y, m * b.r);
+        g.addColorStop(0, 'rgba(' + b.c + ',' + b.a + ')');
+        g.addColorStop(1, 'rgba(' + b.c + ',0)');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      }
+    }
+    function giro(t) {
+      if (!visibile) return;
+      cx += (mx - cx) * .06; cy += (my - cy) * .06;
+      disegna(t);
+      var sy = Math.min(scrollY, innerHeight);
+      for (var i = 0; i < strati.length; i++) {
+        var d = +strati[i].getAttribute('data-prof');
+        strati[i].style.transform = 'translate3d(' + (-cx * d).toFixed(2) + 'px,' + (-cy * d - sy * d * (piccolo ? .012 : .02)).toFixed(2) + 'px,0)';
+      }
+      requestAnimationFrame(giro);
+    }
+    misura();
+    addEventListener('resize', function () { piccolo = innerWidth < 700; misura(); }, { passive: true });
+    addEventListener('pointermove', function (e) {
+      mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5;
+    }, { passive: true });
+    new IntersectionObserver(function (es) {
+      var era = visibile; visibile = es[0].isIntersecting;
+      if (visibile && !era) requestAnimationFrame(giro);
+    }).observe(hero);
+    requestAnimationFrame(giro);
+  })();
 
   // Foto: carica da foto/; se il file manca, mostra il segnaposto.
   document.querySelectorAll('img[data-src]').forEach(function (img) {
@@ -453,7 +701,7 @@
       box.replaceChild(ph, img);
     }
     img.addEventListener('error', segnaposto, { once: true });
-    img.loading = 'lazy';
+    if (img.hasAttribute('data-eager')) img.fetchPriority = 'high'; else img.loading = 'lazy';
     img.decoding = 'async';
     img.src = img.getAttribute('data-src');
   });
